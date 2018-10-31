@@ -18,6 +18,7 @@
 
     var game = new Phaser.Game(config);
     var base;
+    var bird;
     /*var platforms;
     var player;
     var cursors;
@@ -46,14 +47,20 @@
         this.load.image('background-day', 'assets/sprites/background-day.png');
         this.load.image('background-night', 'assets/sprites/background-night.png');
         this.load.image('base', 'assets/sprites/base.png');
+        this.load.image('blue-bird-downflap', 'assets/sprites/bluebird-downflap.png');
+        this.load.image('blue-bird-midflap', 'assets/sprites/bluebird-midflap.png');
+        this.load.image('blue-bird-upflap', 'assets/sprites/bluebird-upflap.png');
     }
 
     function create ()
     {
         this.add.image(0, 0, 'background-day').setOrigin(0, 0);
-        base = this.physics.add.staticGroup();
+        /*base = this.physics.add.staticGroup();
 
-        base.create(130, 500, 'base');
+        base.create(130, 500, 'base');*/
+        base = this.add.tileSprite(0, 500, 600, 100, 'base');
+
+        bird = this.physics.add.sprite(100, 100, 'blue-bird-downflap');
         /*this.add.image(400, 300, 'sky');
         platforms = this.physics.add.staticGroup();
 
@@ -113,6 +120,10 @@
 
     function update ()
     {
+        
+        /*if(this.bird.angle < 20){
+            this.bird.angle += 1;
+        }*/
         /*if(cursors.left.isDown)
         {
             player.setVelocityX(-160);
