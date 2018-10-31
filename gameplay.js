@@ -53,8 +53,7 @@
         this.add.image(0, 0, 'background-day').setOrigin(0, 0);
         base = this.physics.add.staticGroup();
 
-        base.create(0, 500, 'base');
-        base.width = 288;
+        base.create(130, 500, 'base');
         /*this.add.image(400, 300, 'sky');
         platforms = this.physics.add.staticGroup();
 
