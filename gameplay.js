@@ -20,8 +20,10 @@
     var base;
     var bird;
     var cursors;
-    var logo;
-    var gameStarted = false;
+    var intro;
+    var gameover;
+    var gameStarted;
+    var finishedGame;
 
     function preload ()
     {
@@ -41,7 +43,8 @@
         this.load.image('blue-bird-downflap', 'assets/sprites/bluebird-downflap.png');
         this.load.image('blue-bird-midflap', 'assets/sprites/bluebird-midflap.png');
         this.load.image('blue-bird-upflap', 'assets/sprites/bluebird-upflap.png');
-        this.load.image('message', 'assets/sprites/message.png');
+        this.load.image('intro', 'assets/sprites/message.png');
+        this.load.image('gameover', 'assets/sprites/gameover.png')
         this.load.spritesheet('bird', 'assets/sprites/birds.png', {frameWidth: 100, frameHeight: 100});
     }
 
@@ -50,8 +53,9 @@
         let bg = this.add.sprite(0, 0, 'background-day');
         bg.setOrigin(0, 0);
 
-
-        logo = this.add.image(288/2, 512/2, 'message');
+        intro = this.add.image(288/2, 512/2, 'intro');
+        gameover = this.add.image(288/2, 512/2, 'gameover');
+        gameover.visible = false;
         this.anims.create({
             key: 'fly',
             frames: [
@@ -62,17 +66,56 @@
             frameRate: 8,
             repeat: -1
         });
-        bird = this.add.sprite(100, 300, 'bird').play('fly');
+        
         //bird.setCollideWorldBounds(true);
         base = this.add.tileSprite(0, 500, 600, 100, 'base');
+        bird = this.physics.add.sprite(100, 300, 'bird').play('fly');
+        bird.body.allowGravity = false;
+        bird.body.setBounce(10);
         cursors = this.input.keyboard.createCursorKeys();
+
+        this.input.on("pointerdown", function() {
+            if (!gameStarted) {
+              startGame();
+            }
+          });
     }
 
     function update ()
     {
-        base.tilePositionX += 2.5;
-
-        if(cursors.space.isDown && gameStarted == false){
-            logo.destroy();
+        if(!finishedGame)
+        {
+            base.tilePositionX += 2.5;
         }
+        
+        if(gameStarted && !finishedGame)
+        {
+            if(bird.y >= 440)
+            {
+                finishGame();
+            }
+            
+            if(cursors.space.isDown)
+            {
+                bird.setVelocityY(-100);
+            }
+        }
+    }
+
+    function startGame()
+    {
+        gameStarted = true;
+        finishedGame = false;
+        intro.visible = false;
+        //score.visible = true;
+        bird.body.allowGravity = true;
+    }
+
+    function finishGame() 
+    {
+        gameStarted = false;
+        finishedGame = true;
+        gameover.visible = true;
+        bird.body.setEnable(false);
+        base.tilePositionX = 0;
     }
