@@ -24,6 +24,7 @@
     var gameover;
     var gameStarted;
     var finishedGame;
+    var anims;
 
     function preload ()
     {
@@ -66,6 +67,7 @@
             frameRate: 8,
             repeat: -1
         });
+        anims = this.anims;
         
         //bird.setCollideWorldBounds(true);
         base = this.add.tileSprite(0, 500, 600, 100, 'base');
@@ -117,5 +119,6 @@
         finishedGame = true;
         gameover.visible = true;
         bird.body.setEnable(false);
+        anims.remove('fly');
         base.tilePositionX = 0;
     }
