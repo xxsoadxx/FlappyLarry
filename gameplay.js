@@ -92,7 +92,7 @@
         
         if(gameStarted && !finishedGame)
         {
-            if(bird.y >= 440)
+            if(bird.y >= (game.config.height - base.displayHeight + bird.displayHeight))
             {
                 finishGame();
             }
