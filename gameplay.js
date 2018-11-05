@@ -5,7 +5,7 @@
         physics: {
             default: 'arcade',
             arcade: {
-                gravity: { y: 300 },
+                gravity: { y: 600 },
                 debug: false
             }
         },
@@ -54,8 +54,8 @@
         let bg = this.add.sprite(0, 0, 'background-day');
         bg.setOrigin(0, 0);
 
-        intro = this.add.image(288/2, 512/2, 'intro');
-        gameover = this.add.image(288/2, 512/2, 'gameover');
+        intro = this.add.image(game.config.width/2, game.config.height/2, 'intro');
+        gameover = this.add.image(game.config.width/2, game.config.height/2, 'gameover');
         gameover.visible = false;
         this.anims.create({
             key: 'fly',
@@ -99,7 +99,12 @@
             
             if(cursors.space.isDown)
             {
-                bird.setVelocityY(-100);
+                jump();
+            }
+
+            if (bird.angle < 20)
+            {
+                bird.angle += 1; 
             }
         }
     }
@@ -109,7 +114,6 @@
         gameStarted = true;
         finishedGame = false;
         intro.visible = false;
-        //score.visible = true;
         bird.body.allowGravity = true;
     }
 
@@ -121,4 +125,10 @@
         bird.body.setEnable(false);
         anims.remove('fly');
         base.tilePositionX = 0;
+    }
+
+    function jump()
+    {
+        bird.setVelocityY(-250);
+        bird.angle = -20;
     }
