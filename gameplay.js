@@ -95,7 +95,6 @@
             if(bird.y >= (game.config.height - base.displayHeight + bird.displayHeight))
             {
                 finishGame();
-                console.log('test');
             }
             
             if(cursors.space.isDown)
