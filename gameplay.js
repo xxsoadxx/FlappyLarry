@@ -92,7 +92,6 @@
         gameover = this.add.image(game.config.width/2, game.config.height/2, 'gameover');
         gameover.visible = false;
         gameover.setDepth(1);
-        console.log(bird);
 
         cursors = this.input.keyboard.createCursorKeys();
 
