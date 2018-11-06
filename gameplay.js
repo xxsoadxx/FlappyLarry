@@ -6,7 +6,7 @@
             default: 'arcade',
             arcade: {
                 gravity: { y: 600 },
-                debug: false
+                debug: true
             }
         },
         scene: {
@@ -56,9 +56,6 @@
         let bg = this.add.sprite(0, 0, 'background-day');
         bg.setOrigin(0, 0);
 
-        intro = this.add.image(game.config.width/2, game.config.height/2, 'intro');
-        gameover = this.add.image(game.config.width/2, game.config.height/2, 'gameover');
-        gameover.visible = false;
         this.anims.create({
             key: 'fly',
             frames: [
@@ -71,20 +68,36 @@
         });
         anims = this.anims;
         
-        //bird.setCollideWorldBounds(true);
         base = this.add.tileSprite(0, 500, 600, 100, 'base');
+        base.setDepth(1);
+        this.physics.add.existing(base, false);
+        base.body.allowGravity = false;
+        base.body.setCollideWorldBounds(true);
+
         bird = this.physics.add.sprite(100, 300, 'bird').play('fly');
+        bird.setOrigin(-0.2, 0.5);
         bird.body.allowGravity = false;
-        bird.body.setBounce(10);
+        bird.body.setCollideWorldBounds(true);
+
+        this.physics.add.collider(base, bird, finishGame);
 
         pipes = this.physics.add.group();
+        Phaser.Actions.PlaceOnRectangle(pipes.getChildren(), new Phaser.Geom.Rectangle())
 
-        timedEvent = this.time.addEvent({ delay: 500, callback: addOnePipe, callbackScope: this, loop: true});
+        this.physics.add.collider(pipes, bird, finishGame);
+
+        timedEvent = this.time.addEvent({ delay: 1250, callback: addOnePipe, callbackScope: this, loop: true});
         
+        intro = this.add.image(game.config.width/2, game.config.height/2, 'intro');
+        gameover = this.add.image(game.config.width/2, game.config.height/2, 'gameover');
+        gameover.visible = false;
+        gameover.setDepth(1);
+        console.log(bird);
+
         cursors = this.input.keyboard.createCursorKeys();
 
         this.input.on("pointerdown", function() {
-            if (!gameStarted) {
+            if (!gameStarted && !finishedGame) {
               startGame();
             }
           });
@@ -102,11 +115,6 @@
             pipes.getChildren().forEach(function(pipe){
                 pipe.x -= 2.5;
             });
-
-            if(bird.y >= (game.config.height - base.displayHeight + bird.displayHeight))
-            {
-                finishGame();
-            }
             
             if(cursors.space.isDown)
             {
@@ -133,7 +141,7 @@
         gameStarted = false;
         finishedGame = true;
         gameover.visible = true;
-        bird.body.setEnable(false);
+        bird.alive = false;
         anims.remove('fly');
         base.tilePositionX = 0;
         timedEvent.remove(false);
@@ -145,8 +153,18 @@
         bird.angle = -20;
     }
 
-    function addOnePipe(x, y){
+    function addOnePipe(){
         if(gameStarted && !finishedGame){
-            pipes.create(300, 300, 'pipe').body.allowGravity = false;
+            pBottom = this.add.tileSprite(300, game.config.height - base.displayHeight, 52, 200, 'pipe');
+            this.physics.add.existing(pBottom, false);
+            pipes.add(pBottom);  
+            pBottom.body.setImmovable();         
+            pBottom.body.setAllowGravity(false);
+
+            pTop = this.add.tileSprite(300, 0, 52, 200, 'pipe').setFlipY(true);
+            this.physics.add.existing(pTop, false);
+            pipes.add(pTop);
+            pTop.body.setImmovable(false);
+            pTop.body.setAllowGravity(false);
         }    
     }
