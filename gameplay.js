@@ -78,9 +78,10 @@
         bird.body.allowGravity = false;
         bird.body.setBounce(10);
 
-        pipes = this.add.group();
-        timedEvent = this.time.addEvent({ delay: 500, callback: addOnePipe, callbackScope: this, loop: true});
+        pipes = this.physics.add.group();
 
+        timedEvent = this.time.addEvent({ delay: 500, callback: addOnePipe, callbackScope: this, loop: true});
+        
         cursors = this.input.keyboard.createCursorKeys();
 
         this.input.on("pointerdown", function() {
@@ -99,7 +100,7 @@
             pipes.getChildren().forEach(function(pipe){
                 pipe.x -= 2.5;
             });
-            
+
         }
         
         if(gameStarted && !finishedGame)
@@ -119,7 +120,7 @@
                 bird.angle += 1; 
             }
         }
-    }
+    }   
 
     function startGame()
     {
@@ -147,5 +148,5 @@
     }
 
     function addOnePipe(x, y){
-        pipes.create(300, 300, 'pipe');
+        pipes.create(300, 300, 'pipe').body.allowGravity = false;
     }
