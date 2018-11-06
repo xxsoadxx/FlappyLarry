@@ -25,6 +25,8 @@
     var gameStarted;
     var finishedGame;
     var anims;
+    var pipes;
+    var timedEvent;
 
     function preload ()
     {
@@ -47,6 +49,7 @@
         this.load.image('intro', 'assets/sprites/message.png');
         this.load.image('gameover', 'assets/sprites/gameover.png')
         this.load.spritesheet('bird', 'assets/sprites/birds.png', {frameWidth: 100, frameHeight: 100});
+        this.load.image('pipe', 'assets/sprites/pipe-green.png');
     }
 
     function create ()
@@ -74,6 +77,10 @@
         bird = this.physics.add.sprite(100, 300, 'bird').play('fly');
         bird.body.allowGravity = false;
         bird.body.setBounce(10);
+
+        pipes = this.add.group();
+        timedEvent = this.time.addEvent({ delay: 500, callback: addOnePipe, callbackScope: this, loop: true});
+
         cursors = this.input.keyboard.createCursorKeys();
 
         this.input.on("pointerdown", function() {
@@ -88,6 +95,11 @@
         if(!finishedGame)
         {
             base.tilePositionX += 2.5;
+
+            pipes.getChildren().forEach(function(pipe){
+                pipe.x -= 2.5;
+            });
+            
         }
         
         if(gameStarted && !finishedGame)
@@ -125,10 +137,15 @@
         bird.body.setEnable(false);
         anims.remove('fly');
         base.tilePositionX = 0;
+        timedEvent.remove(false);
     }
 
     function jump()
     {
         bird.setVelocityY(-250);
         bird.angle = -20;
+    }
+
+    function addOnePipe(x, y){
+        pipes.create(300, 300, 'pipe');
     }
