@@ -48,7 +48,6 @@
         this.load.image('blue-bird-upflap', 'assets/sprites/bluebird-upflap.png');
         this.load.image('intro', 'assets/sprites/message.png');
         this.load.image('gameover', 'assets/sprites/gameover.png')
-        this.load.spritesheet('bird', 'assets/sprites/birds.png', {frameWidth: 100, frameHeight: 100});
         this.load.image('pipe', 'assets/sprites/pipe-green.png');
     }
 
