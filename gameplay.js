@@ -95,15 +95,14 @@
         if(!finishedGame)
         {
             base.tilePositionX += 2.5;
-
-            pipes.getChildren().forEach(function(pipe){
-                pipe.x -= 2.5;
-            });
-
         }
         
         if(gameStarted && !finishedGame)
         {
+            pipes.getChildren().forEach(function(pipe){
+                pipe.x -= 2.5;
+            });
+
             if(bird.y >= (game.config.height - base.displayHeight + bird.displayHeight))
             {
                 finishGame();
@@ -147,5 +146,7 @@
     }
 
     function addOnePipe(x, y){
-        pipes.create(300, 300, 'pipe').body.allowGravity = false;
+        if(gameStarted && !finishedGame){
+            pipes.create(300, 300, 'pipe').body.allowGravity = false;
+        }    
     }
