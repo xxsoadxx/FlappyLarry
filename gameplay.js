@@ -55,6 +55,7 @@
     {
         let bg = this.add.sprite(0, 0, 'background-day');
         bg.setOrigin(0, 0);
+        bg.setDepth(0);
 
         this.anims.create({
             key: 'fly',
@@ -69,29 +70,32 @@
         anims = this.anims;
         
         base = this.add.tileSprite(0, game.config.height, 600, 50, 'base');
-        base.setDepth(1);
+        base.setDepth(3);
         this.physics.add.existing(base, false);
         base.body.allowGravity = false;
         base.body.setCollideWorldBounds(true);
 
         bird = this.physics.add.sprite(100, 300, 'bird').play('fly');
+        bird.body.height = 24;
         bird.setOrigin(-0.2, 0.5);
         bird.body.allowGravity = false;
         bird.body.setCollideWorldBounds(true);
+        bird.setDepth(2);
 
         this.physics.add.collider(base, bird, finishGame);
 
         pipes = this.physics.add.group();
-        Phaser.Actions.PlaceOnRectangle(pipes.getChildren(), new Phaser.Geom.Rectangle())
+        pipes.setDepth(1);
 
-        this.physics.add.collider(pipes, bird, finishGame);
+        this.physics.add.overlap(pipes, bird, finishGame);
 
-        timedEvent = this.time.addEvent({ delay: 1250, callback: addOnePipe, callbackScope: this, loop: true});
+        timedEvent = this.time.addEvent({ delay: 1500, callback: addOnePipe, callbackScope: this, loop: true});
         
         intro = this.add.image(game.config.width/2, game.config.height/2, 'intro');
+        intro.setDepth(4);
         gameover = this.add.image(game.config.width/2, game.config.height/2, 'gameover');
         gameover.visible = false;
-        gameover.setDepth(1);
+        gameover.setDepth(4);
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -150,28 +154,27 @@
     {
         bird.setVelocityY(-250);
         bird.angle = -20;
+        
     }
 
     function addOnePipe(){
         if(gameStarted && !finishedGame){
-            var gap = 20;
-            var randomHeightTop = Phaser.Math.Between(122, 400);
+            var gap = 100;
+            var randomHeightTop = Phaser.Math.Between(50, 312);
             var calculHeightBottom = game.config.height - base.height - randomHeightTop - gap;
 
-            pBottom = this.add.tileSprite(400, game.config.height-base.height, 52, calculHeightBottom, 'pipe');
+            pBottom = this.add.tileSprite(400, 462, 52, calculHeightBottom, 'pipe');
             this.physics.add.existing(pBottom, false);
             pipes.add(pBottom);  
             pBottom.body.setImmovable();         
             pBottom.body.setAllowGravity(false);
-            pBottom.setOrigin(0.5, -1);
-            console.log(pBottom);
+            pBottom.setOrigin(0.5, 1);
 
-            pTop = this.add.tileSprite(400, 0, 52, randomHeightTop, 'pipe').setFlipY(true);
+            pTop = this.add.tileSprite(400, randomHeightTop, 52, 320, 'pipe').setFlipY(true).setOrigin(0.5, 1);
             this.physics.add.existing(pTop, false);
             pipes.add(pTop);
             pTop.body.setImmovable();
             pTop.body.setAllowGravity(false);
-            pBottom.setOrigin(0.5, 1);
-            console.log(pTop);
+            pTop.setOrigin(0.5, 1);
         }    
     }
