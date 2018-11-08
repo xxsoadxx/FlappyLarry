@@ -68,7 +68,7 @@
         });
         anims = this.anims;
         
-        base = this.add.tileSprite(0, 500, 600, 100, 'base');
+        base = this.add.tileSprite(0, game.config.height, 600, 50, 'base');
         base.setDepth(1);
         this.physics.add.existing(base, false);
         base.body.allowGravity = false;
@@ -154,16 +154,24 @@
 
     function addOnePipe(){
         if(gameStarted && !finishedGame){
-            pBottom = this.add.tileSprite(300, game.config.height - base.displayHeight, 52, 200, 'pipe');
+            var gap = 20;
+            var randomHeightTop = Phaser.Math.Between(122, 400);
+            var calculHeightBottom = game.config.height - base.height - randomHeightTop - gap;
+
+            pBottom = this.add.tileSprite(400, game.config.height-base.height, 52, calculHeightBottom, 'pipe');
             this.physics.add.existing(pBottom, false);
             pipes.add(pBottom);  
             pBottom.body.setImmovable();         
             pBottom.body.setAllowGravity(false);
+            pBottom.setOrigin(0.5, -1);
+            console.log(pBottom);
 
-            pTop = this.add.tileSprite(300, 0, 52, 200, 'pipe').setFlipY(true);
+            pTop = this.add.tileSprite(400, 0, 52, randomHeightTop, 'pipe').setFlipY(true);
             this.physics.add.existing(pTop, false);
             pipes.add(pTop);
-            pTop.body.setImmovable(false);
+            pTop.body.setImmovable();
             pTop.body.setAllowGravity(false);
+            pBottom.setOrigin(0.5, 1);
+            console.log(pTop);
         }    
     }
