@@ -27,6 +27,10 @@
     var anims;
     var pipes;
     var timedEvent;
+    var score;
+    var labelScore;
+    var zonesScore;
+    var zoneScore;
 
     function preload ()
     {
@@ -89,6 +93,10 @@
 
         this.physics.add.overlap(pipes, bird, finishGame);
 
+        zonesScore = this.physics.add.group();
+        zonesScore.setDepth(4);
+        this.physics.add.overlap(bird, zonesScore, incrementScore);
+
         timedEvent = this.time.addEvent({ delay: 1500, callback: addOnePipe, callbackScope: this, loop: true});
         
         intro = this.add.image(game.config.width/2, game.config.height/2, 'intro');
@@ -96,6 +104,10 @@
         gameover = this.add.image(game.config.width/2, game.config.height/2, 'gameover');
         gameover.visible = false;
         gameover.setDepth(4);
+
+        score = 0;
+        labelScore = this.add.text(20, 20, "0", 
+            { font: "30px Arial", fill: "#ffffff" });
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -176,5 +188,24 @@
             pTop.body.setImmovable();
             pTop.body.setAllowGravity(false);
             pTop.setOrigin(0.5, 1);
-        }    
+
+            zone = this.add.zone(410, 512).setSize(50, 400);
+            this.physics.world.enable(zone);
+            zone.body.setAllowGravity(false);
+            zone.body.moves = false;
+            zone.body.debugBodyColor = 0xffff00;
+            console.log(zone);
+            /*zonesScore.add(zoneScore);
+            this.physics.world.enable(zoneScore);
+            zoneScore.body.setAllowGravity(false);
+            zoneScore.body.moves = false;
+            zoneScore.body.debugBodyColor = 0xffff00;
+            console.log(zoneScore);*/
+            
+        }
+    }
+
+    function incrementScore(){
+        score++;
+        labelScore.setText('Score: ' + score);
     }
