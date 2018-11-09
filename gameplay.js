@@ -6,7 +6,7 @@
             default: 'arcade',
             arcade: {
                 gravity: { y: 600 },
-                debug: true
+                debug: false
             }
         },
         scene: {
@@ -30,7 +30,6 @@
     var score;
     var labelScore;
     var zonesScore;
-    var zoneScore;
 
     function preload ()
     {
@@ -94,7 +93,6 @@
         this.physics.add.overlap(pipes, bird, finishGame);
 
         zonesScore = this.physics.add.group();
-        zonesScore.setDepth(4);
         this.physics.add.overlap(bird, zonesScore, incrementScore);
 
         timedEvent = this.time.addEvent({ delay: 1500, callback: addOnePipe, callbackScope: this, loop: true});
@@ -129,6 +127,10 @@
         {
             pipes.getChildren().forEach(function(pipe){
                 pipe.x -= 2.5;
+            });
+
+            zonesScore.getChildren().forEach(function(zoneScore){
+                zoneScore.x -= 2.5;
             });
             
             if(cursors.space.isDown)
@@ -189,23 +191,18 @@
             pTop.body.setAllowGravity(false);
             pTop.setOrigin(0.5, 1);
 
-            zone = this.add.zone(410, 512).setSize(50, 400);
-            this.physics.world.enable(zone);
-            zone.body.setAllowGravity(false);
-            zone.body.moves = false;
-            zone.body.debugBodyColor = 0xffff00;
-            console.log(zone);
-            /*zonesScore.add(zoneScore);
+            zoneScore = this.add.zone(400 + pBottom.width/2, 0).setSize(1, game.config.height - base.height);
+            zonesScore.add(zoneScore);
+            zoneScore.setDepth(0);
             this.physics.world.enable(zoneScore);
             zoneScore.body.setAllowGravity(false);
-            zoneScore.body.moves = false;
-            zoneScore.body.debugBodyColor = 0xffff00;
-            console.log(zoneScore);*/
-            
+            zoneScore.body.moves = false;            
         }
     }
 
-    function incrementScore(){
+    function incrementScore(bird, zoneScore){
         score++;
-        labelScore.setText('Score: ' + score);
+        labelScore.setText(score);
+        labelScore.setDepth(4);
+        zoneScore.destroy();
     }
