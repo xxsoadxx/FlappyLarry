@@ -50,6 +50,9 @@
 
     function create ()
     {
+        window.addEventListener('resize', resize);
+        resize();
+
         let bg = this.add.sprite(0, 0, 'background-day');
         bg.setOrigin(0, 0);
         bg.setDepth(0);
@@ -162,8 +165,7 @@
     function jump()
     {
         bird.setVelocityY(-250);
-        bird.angle = -20;
-        
+        bird.angle = -20;   
     }
 
     function addOnePipe(){
@@ -199,4 +201,17 @@
         score++;
         scoreText.text = score;
         zoneScore.destroy();
+    }
+
+    function resize(){
+        var canvas = game.canvas, width = window.innerWidth, height = window.innerHeight;
+        var wratio = width / height, ratio = canvas.width / canvas.height;
+    
+        if (wratio < ratio) {
+            canvas.style.width = width + "px";
+            canvas.style.height = (width / ratio) + "px";
+        } else {
+            canvas.style.width = (height * ratio) + "px";
+            canvas.style.height = height + "px";
+        }
     }
