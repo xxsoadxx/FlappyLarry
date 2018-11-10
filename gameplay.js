@@ -111,6 +111,9 @@
             if (!gameStarted && !finishedGame) {
               startGame();
             }
+            if (gameStarted && !finishedGame) {
+                jump();
+              }
           });
     }
 
