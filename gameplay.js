@@ -28,21 +28,15 @@
     var pipes;
     var timedEvent;
     var score;
+    var scoretext;
     var labelScore;
+    var scoreSprite;
+    var scoreSprites;
     var zonesScore;
 
     function preload ()
     {
-        this.load.image('0', 'assets/sprites/0.png');
-        this.load.image('1', 'assets/sprites/1.png');
-        this.load.image('2', 'assets/sprites/2.png');
-        this.load.image('3', 'assets/sprites/3.png');
-        this.load.image('4', 'assets/sprites/4.png');
-        this.load.image('5', 'assets/sprites/5.png');
-        this.load.image('6', 'assets/sprites/6.png');
-        this.load.image('7', 'assets/sprites/7.png');
-        this.load.image('8', 'assets/sprites/8.png');
-        this.load.image('9', 'assets/sprites/9.png');
+        this.load.bitmapFont('font', 'assets/fonts/font.png', 'assets/fonts/font.fnt');
         this.load.image('background-day', 'assets/sprites/background-day.png');
         this.load.image('background-night', 'assets/sprites/background-night.png');
         this.load.image('base', 'assets/sprites/base.png');
@@ -104,8 +98,9 @@
         gameover.setDepth(4);
 
         score = 0;
-        labelScore = this.add.text(20, 20, "0", 
-            { font: "30px Arial", fill: "#ffffff" });
+
+        scoreText = this.add.bitmapText(game.config.width/2, 20, 'font', score, 40);
+        scoreText.setDepth(4);
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -173,7 +168,7 @@
 
     function addOnePipe(){
         if(gameStarted && !finishedGame){
-            var gap = 100;
+            var gap = 120;
             var randomHeightTop = Phaser.Math.Between(50, 312);
             var calculHeightBottom = game.config.height - base.height - randomHeightTop - gap;
 
@@ -202,7 +197,6 @@
 
     function incrementScore(bird, zoneScore){
         score++;
-        labelScore.setText(score);
-        labelScore.setDepth(4);
+        scoreText.text = score;
         zoneScore.destroy();
     }
