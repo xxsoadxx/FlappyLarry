@@ -22,12 +22,16 @@
     var cursors;
     var intro;
     var gameover;
+    var replay;
     var gameStarted;
     var finishedGame;
     var anims;
     var pipes;
     var timedEvent;
     var score;
+    var currentScoreText;
+    var bestScore = 0;
+    var bestScoreText;
     var scoretext;
     var labelScore;
     var scoreSprite;
@@ -44,8 +48,9 @@
         this.load.image('blue-bird-midflap', 'assets/sprites/bluebird-midflap.png');
         this.load.image('blue-bird-upflap', 'assets/sprites/bluebird-upflap.png');
         this.load.image('intro', 'assets/sprites/message.png');
-        this.load.image('gameover', 'assets/sprites/gameover.png')
+        this.load.image('gameover', 'assets/sprites/scoreboard.png');
         this.load.image('pipe', 'assets/sprites/pipe-green.png');
+        this.load.image('replay', 'assets/sprites/replay.png');
     }
 
     function create ()
@@ -100,10 +105,22 @@
         gameover.visible = false;
         gameover.setDepth(4);
 
+        replay = this.add.image(game.config.width/2, 3*game.config.height/4, 'replay').setInteractive();
+        replay.visible = false;
+        replay.setDepth(4);
+
         score = 0;
+
+        currentScoreText = this.add.bitmapText(3*game.config.width/4 + 5, game.config.height/2 - 35, 'font', score, 20);
+        currentScoreText.visible = false;
+        currentScoreText.setDepth(4);
 
         scoreText = this.add.bitmapText(game.config.width/2, 20, 'font', score, 40);
         scoreText.setDepth(4);
+
+        bestScoreText = this.add.bitmapText(3*game.config.width/4 + 5, game.config.height/2 +5, 'font', bestScore, 20);
+        bestScoreText.visible = false;
+        bestScoreText.setDepth(4);
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -115,6 +132,14 @@
                 jump();
               }
           });
+
+        replay.on("pointerdown", function(){
+            if(finishedGame){
+                //this.scene.start('scene');
+                console.log(this.scene);
+                this.scene.start('default');
+            }
+        })  
     }
 
     function update ()
@@ -159,10 +184,17 @@
         gameStarted = false;
         finishedGame = true;
         gameover.visible = true;
+        currentScoreText.visible = true;
+        currentScoreText.text = score;
+        updateBestScore();
+        bestScoreText.text = bestScore;
+        bestScoreText.visible = true;
+        replay.visible = true;
         bird.alive = false;
         anims.remove('fly');
         base.tilePositionX = 0;
         timedEvent.remove(false);
+        scoreText.visible = false;
     }
 
     function jump()
@@ -204,6 +236,12 @@
         score++;
         scoreText.text = score;
         zoneScore.destroy();
+    }
+
+    function updateBestScore(){
+        if(score >= bestScore){
+            bestScore = score;
+        }
     }
 
     function resize(){
