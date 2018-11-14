@@ -19,6 +19,7 @@ var config = {
     scene: [gameScene]
 };
 var game = new Phaser.Game(config);
+var bg;
 var base;
 var bird;
 var cursors;
@@ -57,7 +58,7 @@ function create ()
 {
     window.addEventListener('resize', resize);
     resize();
-    let bg = this.add.sprite(0, 0, 'background-day');
+    bg = this.add.tileSprite(0, 0, 300, 512, 'background-day');
     bg.setOrigin(0, 0);
     bg.setDepth(0);
     bg.setInteractive();
@@ -134,6 +135,7 @@ function update ()
 {
     if(!finishedGame)
     {
+        bg.tilePositionX += 0.25;
         base.tilePositionX += 2.5;
     }
     
