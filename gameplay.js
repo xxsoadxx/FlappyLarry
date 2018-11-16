@@ -50,6 +50,12 @@ function preload ()
     this.load.image('blue-bird-downflap', 'assets/sprites/bluebird-downflap.png');
     this.load.image('blue-bird-midflap', 'assets/sprites/bluebird-midflap.png');
     this.load.image('blue-bird-upflap', 'assets/sprites/bluebird-upflap.png');
+    this.load.image('yellow-bird-downflap', 'assets/sprites/yellowbird-downflap.png');
+    this.load.image('yellow-bird-midflap', 'assets/sprites/yellowbird-midflap.png');
+    this.load.image('yellow-bird-upflap', 'assets/sprites/yellowbird-upflap.png');
+    this.load.image('red-bird-downflap', 'assets/sprites/redbird-downflap.png');
+    this.load.image('red-bird-midflap', 'assets/sprites/redbird-midflap.png');
+    this.load.image('red-bird-upflap', 'assets/sprites/redbird-upflap.png');   
     this.load.image('intro', 'assets/sprites/message.png');
     this.load.image('gameover', 'assets/sprites/scoreboard.png');
     this.load.image('pipe', 'assets/sprites/pipe-green.png');
@@ -67,16 +73,49 @@ function create ()
     bg.setOrigin(0, 0);
     bg.setDepth(0);
     bg.setInteractive();
-    this.anims.create({
-        key: 'fly',
-        frames: [
-            { key: 'blue-bird-downflap' },
-            { key: 'blue-bird-midflap' },
-            { key: 'blue-bird-upflap' },
-        ],
-        frameRate: 8,
-        repeat: -1
-    });
+
+    let birdRandom = Phaser.Math.Between(0, 2);
+
+    if(birdRandom == 0)
+    {
+        this.anims.create({
+            key: 'fly',
+            frames: [
+                { key: 'blue-bird-downflap' },
+                { key: 'blue-bird-midflap' },
+                { key: 'blue-bird-upflap' },
+            ],
+            frameRate: 8,
+            repeat: -1
+        });
+    }
+    else if(birdRandom == 1)
+    {
+        this.anims.create({
+            key: 'fly',
+            frames: [
+                { key: 'yellow-bird-downflap' },
+                { key: 'yellow-bird-midflap' },
+                { key: 'yellow-bird-upflap' },
+            ],
+            frameRate: 8,
+            repeat: -1
+        });
+    }
+    else 
+    {
+        this.anims.create({
+            key: 'fly',
+            frames: [
+                { key: 'red-bird-downflap' },
+                { key: 'red-bird-midflap' },
+                { key: 'red-bird-upflap' },
+            ],
+            frameRate: 8,
+            repeat: -1
+        });
+    }
+
     anims = this.anims;
     
     base = this.add.tileSprite(0, game.config.height, 600, 50, 'base');
@@ -84,7 +123,8 @@ function create ()
     this.physics.add.existing(base, false);
     base.body.allowGravity = false;
     base.body.setCollideWorldBounds(true);
-    bird = this.physics.add.sprite(100, 300, 'bird').play('fly');
+
+    bird = this.physics.add.sprite(100, 300).play('fly');
     bird.body.height = 24;
     bird.setOrigin(-0.2, 0.5);
     bird.body.allowGravity = false;
