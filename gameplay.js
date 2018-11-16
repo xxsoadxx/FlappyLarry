@@ -40,6 +40,7 @@ var labelScore;
 var scoreSprite;
 var scoreSprites;
 var zonesScore;
+var bronzeMedal, silverMedal, goldMedal, platinumMedal;
 function preload ()
 {
     this.load.bitmapFont('font', 'assets/fonts/font.png', 'assets/fonts/font.fnt');
@@ -53,6 +54,10 @@ function preload ()
     this.load.image('gameover', 'assets/sprites/scoreboard.png');
     this.load.image('pipe', 'assets/sprites/pipe-green.png');
     this.load.image('replay', 'assets/sprites/replay.png');
+    this.load.image('medal-bronze', 'assets/sprites/medal_bronze.png');
+    this.load.image('medal-silver', 'assets/sprites/medal_silver.png');
+    this.load.image('medal-gold', 'assets/sprites/medal_gold.png');
+    this.load.image('medal-platinum', 'assets/sprites/medal_platinum.png');
 }
 function create ()
 {
@@ -98,6 +103,16 @@ function create ()
     gameover = this.add.image(game.config.width/2, game.config.height/2, 'gameover');
     gameover.visible = false;
     gameover.setDepth(4);
+
+    bronzeMedal = this.add.image(80, 251, 'medal-bronze').setDepth(5);
+    bronzeMedal.visible = false;
+    silverMedal = this.add.image(80, 251, 'medal-silver').setDepth(5);
+    silverMedal.visible = false;
+    goldMedal = this.add.image(80, 251, 'medal-gold').setDepth(5);
+    goldMedal.visible = false;
+    platinumMedal = this.add.image(80, 251, 'medal-platinum').setDepth(5);
+    platinumMedal.visible = false;
+
     replay = this.add.image(game.config.width/2, 3*game.config.height/4, 'replay').setInteractive();
     replay.visible = false;
     replay.setDepth(4);
@@ -181,6 +196,7 @@ function finishGame()
     base.tilePositionX = 0;
     timedEvent.remove(false);
     scoreText.visible = false;
+    addMedal();
 }
 function jump()
 {
@@ -222,6 +238,22 @@ function updateBestScore(){
         bestScore = score;
     }
 }
+
+function addMedal(){
+    if(10 <= score && score < 20){
+        bronzeMedal.visible = true;
+    }
+    else if(20 <= score && score < 30){
+        silverMedal.visible = true;
+    }
+    else if(30 <= score && score < 50){
+        goldMedal.visible = true;
+    }
+    else if(score > 50){
+        platinumMedal.visible = true;
+    }
+}
+
 function resize(){
     var canvas = game.canvas, width = window.innerWidth, height = window.innerHeight;
     var wratio = width / height, ratio = canvas.width / canvas.height;
