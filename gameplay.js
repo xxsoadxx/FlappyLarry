@@ -69,7 +69,19 @@ function create ()
 {
     window.addEventListener('resize', resize);
     resize();
-    bg = this.add.tileSprite(0, 0, 300, 512, 'background-day');
+
+    let bgRandom = Phaser.Math.Between(0, 1);
+    let bgDayOrNight;
+    switch (bgRandom){
+        case 0:
+            bgDayOrNight = 'background-day';
+            break;
+        case 1:
+            bgDayOrNight = 'background-night';
+            break;    
+    }
+
+    bg = this.add.tileSprite(0, 0, 300, 512, bgDayOrNight);
     bg.setOrigin(0, 0);
     bg.setDepth(0);
     bg.setInteractive();
