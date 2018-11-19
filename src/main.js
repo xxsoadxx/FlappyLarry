@@ -1,3 +1,5 @@
+import 'phaser';
+
 class LoadScene extends Phaser.Scene  
 {
     constructor ()

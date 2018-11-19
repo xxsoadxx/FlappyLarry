@@ -1,0 +1,23 @@
+{
+  "name": "flappy-bird-phaser",
+  "description": "Flappy Bird clone with Phaser 3",
+  "main": "src/main.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "npm run build && webpack-dev-server --port=8000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pielgrin/flappy-bird-phaser.git"
+  },
+  "author": "Pierre Pellegrin",
+  "devDependencies": {
+    "raw-loader": "^0.5.1",
+    "webpack": "^3.4.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^2.11.0"
+  },
+  "dependencies": {
+    "phaser": "^3.3.0"
+  }
+}
