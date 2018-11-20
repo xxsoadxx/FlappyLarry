@@ -141,7 +141,7 @@ class GameScene extends Phaser.Scene
 
         bird = this.physics.add.sprite(75, 300).play('fly');
         bird.body.height = 24;
-        bird.setOrigin(-0.2, 0.5);
+        bird.setOrigin(0.5, 0.7);
         bird.body.allowGravity = false;
         bird.body.setCollideWorldBounds(true);
         bird.setDepth(2);
@@ -199,19 +199,19 @@ class GameScene extends Phaser.Scene
             let gap = 120;
             let randomHeightTop = Phaser.Math.Between(50, 312);
             let calculHeightBottom = game.config.height - base.height - randomHeightTop - gap;
-            let pBottom = this.add.tileSprite(400, 462, 52, calculHeightBottom, 'pipe');
+            let pBottom = this.add.tileSprite(400, 462, 52, calculHeightBottom, 'pipe').setOrigin(0.5, 1);
             this.physics.add.existing(pBottom, false);
             pipes.add(pBottom);
             pBottom.body.setImmovable();
             pBottom.body.setAllowGravity(false);
-            pBottom.setOrigin(0.5, 1);
+            //pBottom.setOrigin(0.5, 1);
             
             let pTop = this.add.tileSprite(400, randomHeightTop, 52, 320, 'pipe').setFlipY(true).setOrigin(0.5, 1);
             this.physics.add.existing(pTop, false);
             pipes.add(pTop);
             pTop.body.setImmovable();
             pTop.body.setAllowGravity(false);
-            pTop.setOrigin(0.5, 1);
+            //pTop.setOrigin(0.5, 1);
             
             let zoneScore = this.add.zone(400 + pBottom.width/2, 0).setSize(1, game.config.height - base.height);
             zonesScore.add(zoneScore);
@@ -247,10 +247,13 @@ class GameScene extends Phaser.Scene
 
     gameOver ()
     {
+        if(!finishedGame)
+        {
             finishedGame = true;
             scoreText.visible = false;
             bird.anims.pause();
             game.scene.start('GameOverScene');
+        }    
     }
 }
 
@@ -281,7 +284,7 @@ class GameOverScene extends Phaser.Scene
         bestScoreText = this.add.bitmapText(3*game.config.width/4 + 5, game.config.height/2 +5, 'font', bestScore, 20);
         bestScoreText.setDepth(4);
         bestScoreText.text = bestScore;
-        this.updateBestScore();
+        this.getBestScore();
 
         let medalColor = this.getMedal();
         if(medalColor != '')
@@ -290,7 +293,7 @@ class GameOverScene extends Phaser.Scene
         }
     }
 
-    updateBestScore ()
+    getBestScore ()
     {
         if(score >= bestScore)
         {
@@ -327,7 +330,7 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 600 },
-            debug: false
+            debug: true
         }
     },
     scene: [LoadScene, GameScene, GameOverScene]
