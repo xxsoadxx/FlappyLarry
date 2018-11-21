@@ -162,6 +162,7 @@ class GameScene extends Phaser.Scene
         });
 
         timedEvent = this.time.addEvent ({ delay: 1500, callback: this.addOnePipe, callbackScope: this, loop: true });
+        timedEvent = this.time.addEvent ({ delay: 5000, callback: this.deletePipes, callbackScope: this, loop: true });
 
         scoreText = this.add.bitmapText(game.config.width/2, 20, 'font', score, 40);
         scoreText.setDepth(4);
@@ -218,6 +219,19 @@ class GameScene extends Phaser.Scene
             zoneScore.body.setAllowGravity(false);
             zoneScore.body.moves = false;  
         }   
+    }
+
+    deletePipes ()
+    {
+        if(gameStarted && !finishedGame)
+        {
+            pipes.getChildren().forEach((pipe) => {
+                if(pipe.x < -pipe.width)
+                {
+                    pipe.destroy();
+                }
+            });
+        }
     }
 
     jump ()
@@ -338,7 +352,7 @@ var game = new Phaser.Game(config);
 var score, bestScore = 0, bg, base, bird, anims;
 var scoreText, bestScoreText, currentScoreText, medal;
 var gameStarted, finishedGame;
-var timedEvent;
+var timedEvent, timedEvent2;
 var pipes, zonesScore;
 var gameover, intro;
 var replay;
