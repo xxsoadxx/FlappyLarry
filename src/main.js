@@ -204,14 +204,12 @@ class GameScene extends Phaser.Scene
             pipes.add(pBottom);
             pBottom.body.setImmovable();
             pBottom.body.setAllowGravity(false);
-            //pBottom.setOrigin(0.5, 1);
             
             let pTop = this.add.tileSprite(400, randomHeightTop, 52, 320, 'pipe').setFlipY(true).setOrigin(0.5, 1);
             this.physics.add.existing(pTop, false);
             pipes.add(pTop);
             pTop.body.setImmovable();
             pTop.body.setAllowGravity(false);
-            //pTop.setOrigin(0.5, 1);
             
             let zoneScore = this.add.zone(400 + pBottom.width/2, 0).setSize(1, game.config.height - base.height);
             zonesScore.add(zoneScore);
@@ -283,8 +281,8 @@ class GameOverScene extends Phaser.Scene
 
         bestScoreText = this.add.bitmapText(3*game.config.width/4 + 5, game.config.height/2 +5, 'font', bestScore, 20);
         bestScoreText.setDepth(4);
-        bestScoreText.text = bestScore;
         this.getBestScore();
+        bestScoreText.text = bestScore;  
 
         let medalColor = this.getMedal();
         if(medalColor != '')
@@ -330,7 +328,7 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 600 },
-            debug: true
+            debug: false
         }
     },
     scene: [LoadScene, GameScene, GameOverScene]
