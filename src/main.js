@@ -93,16 +93,14 @@ class LoadScene extends Phaser.Scene
     resize (){
         var canvas = game.canvas, width = window.innerWidth, height = window.innerHeight;
         var wratio = width / height, ratio = canvas.width / canvas.height;
-        console.log(wratio);
         if (wratio < ratio) {
             canvas.style.width = width + "px";
             canvas.style.height = (width / ratio) + "px";
         } 
-        else if (wratio > 50 && wratio < 80) {
-            //canvas.style.width = (height * ratio) + "px";
+        /*else {
             canvas.style.width = width + "px";
             canvas.style.height = height + "px";
-        }
+        }*/
         else 
         {
             canvas.style.width = (height * ratio) + "px";
