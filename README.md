@@ -1,4 +1,4 @@
 # flappy-bird-phaser
 Flappy Bird with phaser
 
-Online demo : https://flappy-bird-pielgrin.herokuapp.com/
+Online demo : https://pielgrin.github.io/flappy-bird-phaser/
