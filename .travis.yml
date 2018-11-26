@@ -12,9 +12,16 @@ branches:
 
 install:
   - npm install
-  - npm run publish
+
+before_script:
+  - git config --global user.email "piepellegrin@gmail.com"
+  - git config --global user.name "Pierre Pellegrin"
+  - git remote rm origin
+  - git remote add origin https://github.com/Pielgrin/flappy-bird-phaser.git
+
 
 script:
+  - npm run publish
   - echo "Skipping tests"
 
 deploy:
