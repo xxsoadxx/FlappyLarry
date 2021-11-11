@@ -170,6 +170,7 @@ class GameScene extends Phaser.Scene
             this.bird.anims.pause();
             this.registry.set('score', this.score);
             this.game.scene.start('GameOverScene');
+            this.music.pause()
         }    
     }
 }
