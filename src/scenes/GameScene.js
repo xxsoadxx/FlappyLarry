@@ -37,7 +37,10 @@ class GameScene extends Phaser.Scene
         this.base.body.allowGravity = false;
         this.base.body.setCollideWorldBounds(true);
 
-        this.bird = this.physics.add.sprite(75, 300).play('fly');
+        var music = this.sound.add('music');
+        music.play({loop:true});
+
+        this.bird = this.physics.add.sprite(75, 300).play('clapWings');
         this.bird.body.height = 24;
         this.bird.setOrigin(0.5, 0.7);
         this.bird.body.allowGravity = false;
@@ -52,8 +55,14 @@ class GameScene extends Phaser.Scene
         this.zonesScore = this.physics.add.group();
         this.physics.add.overlap(this.bird, this.zonesScore, this.incrementScore, null, this);
 
-        this.intro = this.add.image(this.game.config.width/2, this.game.config.height/2, 'intro');
-        this.intro.setDepth(4);
+        this.title = this.add.image(this.cameras.main.worldView.x + this.cameras.main.width / 2, 0, 'title')
+        this.physics.add.existing(this.title)
+        this.title.body.setCollideWorldBounds(true)
+        this.title.body.allowGravity = true
+        this.title.body.setBoundsRectangle(new Phaser.Geom.Rectangle(0, 0, this.cameras.main.worldView.x + this.cameras.main.width, this.cameras.main.worldView.y + this.cameras.main.height / 2))
+
+        /*this.intro = this.add.image(this.game.config.width/2, this.game.config.height/2, 'intro');
+        this.intro.setDepth(4);*/
 
         this.bg.on('pointerdown', () => {
             this.gameStarted ? this.jump() : this.startGame();
@@ -148,7 +157,7 @@ class GameScene extends Phaser.Scene
     startGame ()
     {
         this.gameStarted = true;
-        this.intro.visible = false;
+        this.title.visible = false;
         this.bird.body.allowGravity = true;
     }
 

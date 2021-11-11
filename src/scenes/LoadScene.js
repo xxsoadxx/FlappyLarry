@@ -7,27 +7,19 @@ class LoadScene extends Phaser.Scene
 
     preload ()
     {
-        this.load.on('progress', (value) => {
-            console.log(value*100 + ' %');
-        });
+        this.load.audio('intro', [
+            'assets/audio/intro.mp3'
+        ]);
 
-        this.load.on('complete', () => {
-            this.scene.start('GameScene');
-        });
+        this.load.audio('music', [
+            'assets/audio/music.mp3'
+        ]);
+        this.load.image('title', 'assets/sprites/title.png');
 
         this.load.bitmapFont('font', 'assets/fonts/font.png', 'assets/fonts/font.fnt');
         this.load.image('background-day', 'assets/sprites/background-day.png');
         this.load.image('background-night', 'assets/sprites/background-night.png');
-        this.load.image('base', 'assets/sprites/base.png');
-        this.load.image('blue-bird-downflap', 'assets/sprites/bluebird-downflap.png');
-        this.load.image('blue-bird-midflap', 'assets/sprites/bluebird-midflap.png');
-        this.load.image('blue-bird-upflap', 'assets/sprites/bluebird-upflap.png');
-        this.load.image('yellow-bird-downflap', 'assets/sprites/yellowbird-downflap.png');
-        this.load.image('yellow-bird-midflap', 'assets/sprites/yellowbird-midflap.png');
-        this.load.image('yellow-bird-upflap', 'assets/sprites/yellowbird-upflap.png');
-        this.load.image('red-bird-downflap', 'assets/sprites/redbird-downflap.png');
-        this.load.image('red-bird-midflap', 'assets/sprites/redbird-midflap.png');
-        this.load.image('red-bird-upflap', 'assets/sprites/redbird-upflap.png');   
+        this.load.image('base', 'assets/sprites/base.png');  
         this.load.image('intro', 'assets/sprites/message.png');
         this.load.image('scoreBoard', 'assets/sprites/scoreboard.png');
         this.load.image('pipe', 'assets/sprites/pipe-green.png');
@@ -36,54 +28,51 @@ class LoadScene extends Phaser.Scene
         this.load.image('medal-silver', 'assets/sprites/medal_silver.png');
         this.load.image('medal-gold', 'assets/sprites/medal_gold.png');
         this.load.image('medal-platinum', 'assets/sprites/medal_platinum.png');
+
+        // Larry
+        this.load.spritesheet('larry', 'assets/sprites/flarry.png', {
+            frameWidth: 34,
+            frameHeight: 24
+        })
     }
 
     create ()
     {
         window.addEventListener('resize', this.resize);
         this.resize();
+        const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
+        const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
+        this.label = this.add.text(screenCenterX, screenCenterY, 'UpShow Presents')
+        this.label.setOrigin(0.5, 0.5)
 
-        let birdRandom = Phaser.Math.Between(0, 2);
+        this.anims.create({
+            key: 'clapWings',
+            frames: this.anims.generateFrameNumbers('larry', {
+                start: 0,
+                end: 2
+            }),
+            frameRate: 10,
+            repeat: -1
+        })
 
-        if(birdRandom == 0)
-        {
-            this.anims.create({
-                key: 'fly',
-                frames: [
-                    { key: 'blue-bird-downflap' },
-                    { key: 'blue-bird-midflap' },
-                    { key: 'blue-bird-upflap' },
-                ],
-                frameRate: 8,
-                repeat: -1
-            });
-        }
-        else if(birdRandom == 1)
-        {
-            this.anims.create({
-                key: 'fly',
-                frames: [
-                    { key: 'yellow-bird-downflap' },
-                    { key: 'yellow-bird-midflap' },
-                    { key: 'yellow-bird-upflap' },
-                ],
-                frameRate: 8,
-                repeat: -1
-            });
-        }
-        else 
-        {
-            this.anims.create({
-                key: 'fly',
-                frames: [
-                    { key: 'red-bird-downflap' },
-                    { key: 'red-bird-midflap' },
-                    { key: 'red-bird-upflap' },
-                ],
-                frameRate: 8,
-                repeat: -1
-            });
-        }
+        this.anims.create({
+            key: 'stop',
+            frames: [{
+                key: 'larry',
+                frame: 1
+            }],
+            frameRate: 20
+        })
+
+        var intro = this.sound.add('intro');
+        
+        setTimeout((function () {
+            intro.play();
+        }).bind(this), 1000)
+
+        setTimeout((function () {
+            this.scene.start('GameScene');
+        }).bind(this), 4000)
     }
 
     resize ()
