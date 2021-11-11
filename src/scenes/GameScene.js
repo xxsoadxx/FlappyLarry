@@ -37,7 +37,7 @@ class GameScene extends Phaser.Scene
         this.base.body.allowGravity = false;
         this.base.body.setCollideWorldBounds(true);
 
-        var music = this.sound.add('music');
+        this.music = this.sound.add('music');
         music.play({loop:true});
 
         this.bird = this.physics.add.sprite(75, 300).play('clapWings');
