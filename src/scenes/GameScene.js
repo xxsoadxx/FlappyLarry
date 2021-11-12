@@ -7,6 +7,7 @@ class GameScene extends Phaser.Scene
 
     create () 
     {
+        this.level = 1
         this.score = {
             pts: 0,
             textObject: this.add.bitmapText(this.game.config.width/2, 20, 'font', '0', 40)
@@ -15,8 +16,10 @@ class GameScene extends Phaser.Scene
         this.gameStarted = false;
         this.finishedGame = false;
 
-        let bgRandom = Phaser.Math.Between(0, 1);
-        let bgDayOrNight;
+        //let bgRandom = Phaser.Math.Between(0, 1);
+        //let bgDayOrNight = 'background-day';
+
+        /*
         switch (bgRandom){
             case 0:
                 bgDayOrNight = 'background-day';
@@ -24,13 +27,19 @@ class GameScene extends Phaser.Scene
             case 1:
                 bgDayOrNight = 'background-night';
                 break;    
-        };
-    
-        this.bg = this.add.tileSprite(0, 0, 300, 512, bgDayOrNight);
+        };*/
+        this.bgNight = this.add.tileSprite(0, 0, 300, 512, 'background-night');
+        this.bgNight.setOrigin(0, 0);
+        this.bgNight.setDepth(0);
+        this.bgNight.setInteractive();
+        this.bgNight.visible = false;
+
+        this.bg = this.add.tileSprite(0, 0, 300, 512, 'background-day');
         this.bg.setOrigin(0, 0);
         this.bg.setDepth(0);
         this.bg.setInteractive();
-
+        this.bg.visible = true;
+            
         this.base = this.add.tileSprite(0, this.game.config.height, 600, 50, 'base');
         this.base.setDepth(3);
         this.physics.add.existing(this.base, false);
@@ -38,8 +47,7 @@ class GameScene extends Phaser.Scene
         this.base.body.setCollideWorldBounds(true);
 
         this.music = this.sound.add('music');
-        this.music.play({loop:true});
-
+        
         this.bird = this.physics.add.sprite(75, 300).play('clapWings');
         this.bird.body.height = 24;
         this.bird.setOrigin(0.5, 0.7);
@@ -67,6 +75,9 @@ class GameScene extends Phaser.Scene
         this.bg.on('pointerdown', () => {
             this.gameStarted ? this.jump() : this.startGame();
         });
+        this.bgNight.on('pointerdown', () => {
+            this.gameStarted ? this.jump() : this.startGame();
+        });
 
         this.time.addEvent ({ delay: 1500, callback: this.addOnePipe, callbackScope: this, loop: true });
         this.time.addEvent ({ delay: 5000, callback: this.deletePipes, callbackScope: this, loop: true });        
@@ -76,20 +87,34 @@ class GameScene extends Phaser.Scene
     {
         if(!this.finishedGame)
         {
-            this.bg.tilePositionX += 0.25;
-            this.base.tilePositionX += 2.5;          
+            if(this.level == 1){
+                this.bg.tilePositionX += 0.25;
+                this.base.tilePositionX += 2.5;        
+            } else if(this.level == 2){
+                this.bgNight.tilePositionX += 0.3;
+                this.base.tilePositionX += 3.0;        
+            }
         }
         
         if(!this.finishedGame && this.gameStarted)
         {   
-            this.pipes.getChildren().forEach((pipe) => {
-                pipe.x -= 2.5;
-            });
+            if(this.level == 1){
+                this.pipes.getChildren().forEach((pipe) => {
+                    pipe.x -= 2.5;
+                });
 
-            this.zonesScore.getChildren().forEach((zoneScore) => {
-                zoneScore.x -= 2.5;
-            });
+                this.zonesScore.getChildren().forEach((zoneScore) => {
+                    zoneScore.x -= 2.5;
+                });
+            } else if(this.level == 2){
+                this.pipes.getChildren().forEach((pipe) => {
+                    pipe.x -= 3;
+                });
 
+                this.zonesScore.getChildren().forEach((zoneScore) => {
+                    zoneScore.x -= 3;
+                });
+            }
             if(this.bird.angle < 20 && this.gameStarted)
             {
                 this.bird.angle += 1;
@@ -156,15 +181,25 @@ class GameScene extends Phaser.Scene
 
     startGame ()
     {
+        this.music.play({loop:true});
         this.gameStarted = true;
         this.title.visible = false;
         this.bird.body.allowGravity = true;
-    }
 
+        this.time.addEvent ({ delay: 41000, callback: this.startLvl2, callbackScope: this, loop: false }); 
+    }
+    startLvl2 (){
+        if(this.gameStarted && !this.finishedGame){
+            this.level = 2
+            this.bg.visible = false;
+            this.bgNight.visible = true;
+        }
+    }
     gameOver ()
     {
         if(!this.finishedGame)
         {
+            this.level = 1
             this.finishedGame = true;
             this.score.textObject.visible = false;
             this.bird.anims.pause();
