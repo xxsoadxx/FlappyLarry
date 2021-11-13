@@ -141,7 +141,7 @@ class GameScene extends Phaser.Scene
             pTop.body.setImmovable();
             pTop.body.setAllowGravity(false);
             
-            let zoneScore = this.add.zone(400 + pBottom.width/2, 0).setSize(1, this.game.config.height - this.base.height);
+            let zoneScore = this.add.zone(400 + pBottom.width/2, 0).setSize(1, this.cameras.main.worldView.y + this.cameras.main.height *2);
             this.zonesScore.add(zoneScore);
             zoneScore.setDepth(0);
             this.physics.world.enable(zoneScore);
