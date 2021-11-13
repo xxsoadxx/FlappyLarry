@@ -141,7 +141,7 @@ class GameScene extends Phaser.Scene
             pTop.body.setImmovable();
             pTop.body.setAllowGravity(false);
             
-            let zoneScore = this.add.zone(400 + pBottom.width/2, 0).setSize(1, this.game.config.height - this.base.height);
+            let zoneScore = this.add.zone(400 + pBottom.width/2, 0).setSize(1, (this.game.config.height - this.base.height)*2);
             this.zonesScore.add(zoneScore);
             zoneScore.setDepth(0);
             this.physics.world.enable(zoneScore);
@@ -186,9 +186,10 @@ class GameScene extends Phaser.Scene
         this.title.visible = false;
         this.bird.body.allowGravity = true;
 
-        this.time.addEvent ({ delay: 4100, callback: this.startLvl2, callbackScope: this, loop: false }); 
+        this.time.addEvent ({ delay: 41000, callback: this.startLvl2, callbackScope: this, loop: false }); 
     }
     startLvl2 (){
+        console.log("acaaaaaaa")
         if(this.gameStarted && !this.finishedGame){
             this.level = 2
             this.bg.visible = false;
@@ -199,13 +200,13 @@ class GameScene extends Phaser.Scene
     {
         if(!this.finishedGame)
         {
-            this.level = 1
-            this.finishedGame = true;
-            this.score.textObject.visible = false;
-            this.bird.anims.pause();
-            this.registry.set('score', this.score);
-            this.game.scene.start('GameOverScene');
-            this.music.pause()
+            //this.level = 1
+            //this.finishedGame = true;
+            //this.score.textObject.visible = false;
+            //this.bird.anims.pause();
+            //this.registry.set('score', this.score);
+            //this.game.scene.start('GameOverScene');
+            //this.music.pause()
         }    
     }
 }

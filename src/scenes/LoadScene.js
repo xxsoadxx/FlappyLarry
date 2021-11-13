@@ -74,9 +74,9 @@ class LoadScene extends Phaser.Scene
             this.scene.start('GameScene');
         }).bind(this), 4000)
 
-        /*var width = window.innerWidth, height = window.innerHeight;
+        var width = window.innerWidth, height = window.innerHeight;
         this.scale.displaySize.setAspectRatio( width/height );
-        this.scale.refresh();*/
+        this.scale.refresh();
     }
 
     resize ()
