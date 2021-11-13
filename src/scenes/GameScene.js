@@ -186,7 +186,7 @@ class GameScene extends Phaser.Scene
         this.title.visible = false;
         this.bird.body.allowGravity = true;
 
-        this.time.addEvent ({ delay: 41000, callback: this.startLvl2, callbackScope: this, loop: false }); 
+        this.time.addEvent ({ delay: 4100, callback: this.startLvl2, callbackScope: this, loop: false }); 
     }
     startLvl2 (){
         if(this.gameStarted && !this.finishedGame){
