@@ -74,14 +74,14 @@ class LoadScene extends Phaser.Scene
             this.scene.start('GameScene');
         }).bind(this), 4000)
 
-        var width = window.innerWidth, height = window.innerHeight;
+        /*var width = window.innerWidth, height = window.innerHeight;
         this.scale.displaySize.setAspectRatio( width/height );
-        this.scale.refresh();
+        this.scale.refresh();*/
     }
 
     resize ()
     {
-        /*var canvas = document.querySelector("canvas"), width = window.innerWidth, height = window.innerHeight;
+        var canvas = document.querySelector("canvas"), width = window.innerWidth, height = window.innerHeight;
         var wratio = width / height, ratio = canvas.width / canvas.height;
         if (wratio < ratio) {
             canvas.style.width = width + "px";
@@ -94,7 +94,7 @@ class LoadScene extends Phaser.Scene
         else {
             canvas.style.width = (height * ratio) + "px";
             canvas.style.height = height + "px";
-        }*/
+        }
     
     }
 }

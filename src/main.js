@@ -5,11 +5,11 @@ import GameOverScene from './scenes/GameOverScene.js';
 
 var config = {
     
-    scale: {
+    /*scale: {
 
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
-    },
+    },*/
     
     type: Phaser.AUTO,
     width: 288,
@@ -18,7 +18,7 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 600 },
-            debug: true
+            /*debug: true*/
         }
     },
     scene: [LoadScene, GameScene, GameOverScene],
