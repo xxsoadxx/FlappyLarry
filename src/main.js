@@ -14,7 +14,11 @@ var config = {
             debug: false
         }
     },
-    scene: [LoadScene, GameScene, GameOverScene]
+    debug: true,
+    scene: [LoadScene, GameScene, GameOverScene],
+    audio: {
+        disableWebAudio: true
+    }
 };
 
 const game = new Phaser.Game(config);
