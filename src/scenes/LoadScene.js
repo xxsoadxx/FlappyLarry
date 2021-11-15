@@ -17,6 +17,7 @@ class LoadScene extends Phaser.Scene
         this.load.image('title', 'assets/sprites/title.png');
 
         this.load.bitmapFont('font', 'assets/fonts/font.png', 'assets/fonts/font.fnt');
+        this.load.image('power-up', 'assets/sprites/powerup.png');
         this.load.image('background-day', 'assets/sprites/background-day.png');
         this.load.image('background-night', 'assets/sprites/background-night.png');
         this.load.image('base', 'assets/sprites/base.png');  
@@ -77,6 +78,8 @@ class LoadScene extends Phaser.Scene
         var width = window.innerWidth, height = window.innerHeight;
         this.scale.displaySize.setAspectRatio( width/height );
         this.scale.refresh();
+
+   
     }
 
     resize ()

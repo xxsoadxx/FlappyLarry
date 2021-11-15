@@ -7,6 +7,7 @@ class GameScene extends Phaser.Scene
 
     create () 
     {
+        this.nextPow = 5
         this.level = 1
         this.score = {
             pts: 0,
@@ -60,6 +61,10 @@ class GameScene extends Phaser.Scene
         this.pipes.setDepth(1);
         this.physics.add.overlap(this.pipes, this.bird, this.gameOver, null, this);
 
+        this.powerUps = this.physics.add.group();
+        this.powerUps.setDepth(1);
+        this.physics.add.overlap(this.powerUps, this.bird, this.eatpowerUP, null, this);
+
         this.zonesScore = this.physics.add.group();
         this.physics.add.overlap(this.bird, this.zonesScore, this.incrementScore, null, this);
 
@@ -80,7 +85,8 @@ class GameScene extends Phaser.Scene
         });
 
         this.time.addEvent ({ delay: 1500, callback: this.addOnePipe, callbackScope: this, loop: true });
-        this.time.addEvent ({ delay: 5000, callback: this.deletePipes, callbackScope: this, loop: true });        
+        this.time.addEvent ({ delay: 5000, callback: this.deletePipes, callbackScope: this, loop: true });            
+        
     }
 
     update ()
@@ -106,6 +112,10 @@ class GameScene extends Phaser.Scene
                 this.zonesScore.getChildren().forEach((zoneScore) => {
                     zoneScore.x -= 2.5;
                 });
+
+                this.powerUps.getChildren().forEach((pows) => {
+                    pows.x -= 2.5;
+                });
             } else if(this.level == 2){
                 this.pipes.getChildren().forEach((pipe) => {
                     pipe.x -= 3;
@@ -114,12 +124,20 @@ class GameScene extends Phaser.Scene
                 this.zonesScore.getChildren().forEach((zoneScore) => {
                     zoneScore.x -= 3;
                 });
+
+                this.powerUps.getChildren().forEach((pows) => {
+                    pows.x -= 3;
+                });
             }
             if(this.bird.angle < 20 && this.gameStarted)
             {
                 this.bird.angle += 1;
             }
+
+           
         }
+
+     
     }
 
     addOnePipe ()
@@ -147,6 +165,13 @@ class GameScene extends Phaser.Scene
             this.physics.world.enable(zoneScore);
             zoneScore.body.setAllowGravity(false);
             zoneScore.body.moves = false;  
+            this.counter ++
+
+            if(this.counter == this.nextPow){
+                this.time.addEvent({ delay: 500, callback: this.addOnePW, callbackScope: this, loop: false }); 
+                this.counter = 0
+                this.nextPow = Phaser.Math.Between(4, 10);
+            }
         }   
     }
 
@@ -185,8 +210,11 @@ class GameScene extends Phaser.Scene
         this.gameStarted = true;
         this.title.visible = false;
         this.bird.body.allowGravity = true;
-
+        this.counter = 0
         this.time.addEvent ({ delay: 41000, callback: this.startLvl2, callbackScope: this, loop: false }); 
+
+        
+        this.time.addEvent ({ delay: 5000, callback: this.deletePWs, callbackScope: this, loop: true });   
     }
     startLvl2 (){
         console.log("acaaaaaaa")
@@ -208,6 +236,39 @@ class GameScene extends Phaser.Scene
             //this.game.scene.start('GameOverScene');
             //this.music.pause()
         }    
+    }
+
+    addOnePW ()
+    {
+
+        if(this.gameStarted && !this.finishedGame)
+        {
+            console.log("polloooo");
+            let gap = 120;
+            let randomHeightTop = Phaser.Math.Between(50, 412);
+            //let calculHeightBottom = this.game.config.height - this.base.height - randomHeightTop - gap;
+            let powerUp = this.add.tileSprite(400, randomHeightTop, 64, 60, 'power-up');
+            this.physics.add.existing(powerUp, false);
+            this.powerUps.add(powerUp);
+            powerUp.body.setImmovable();
+            powerUp.body.setAllowGravity(false);
+        }   
+    }
+    deletePWs(){
+        if(this.gameStarted && !this.finishedGame)
+        {
+            this.powerUps.getChildren().forEach((pow) => {
+                if(pow.x < -pow.pow)
+                {
+                    pow.destroy();
+                }
+            });
+        }
+    }
+    eatpowerUP(bird, pow){
+        this.score.pts+= 3;
+        this.score.textObject.setText(('' + this.score.pts));
+        pow.destroy();
     }
 }
 
