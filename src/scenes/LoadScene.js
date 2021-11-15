@@ -10,7 +10,9 @@ class LoadScene extends Phaser.Scene
         this.load.audio('intro', [
             'assets/audio/intro.mp3'
         ]);
-
+        this.load.audio('pow', [
+            'assets/audio/pow.mp3'
+        ]);
         this.load.audio('music', [
             'assets/audio/music.mp3'
         ]);
@@ -71,15 +73,19 @@ class LoadScene extends Phaser.Scene
             intro.play();
         }).bind(this), 1000)
 
-        setTimeout((function () {
-            this.scene.start('GameScene');
-        }).bind(this), 4000)
+       
 
         var width = window.innerWidth, height = window.innerHeight;
         this.scale.displaySize.setAspectRatio( width/height );
         this.scale.refresh();
 
-   
+        //check to see if the audio is decoded
+       // if (this.cache.isSoundDecoded('pow')) {
+            setTimeout((function () {
+                this.scene.start('GameScene');
+            }).bind(this), 4000)
+        //}
+    
     }
 
     resize ()
