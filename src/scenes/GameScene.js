@@ -87,7 +87,8 @@ class GameScene extends Phaser.Scene
         this.time.addEvent ({ delay: 1500, callback: this.addOnePipe, callbackScope: this, loop: true });
         this.time.addEvent ({ delay: 5000, callback: this.deletePipes, callbackScope: this, loop: true });            
         
-        this.powSound = this.sound.add('pow');
+        this.powSound = this.sound.add('intro');
+        
 
     }
 

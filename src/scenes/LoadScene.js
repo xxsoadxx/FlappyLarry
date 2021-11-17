@@ -81,10 +81,10 @@ class LoadScene extends Phaser.Scene
 
         //check to see if the audio is decoded
        // if (this.cache.isSoundDecoded('pow')) {
-            setTimeout((function () {
-                this.scene.start('GameScene');
-            }).bind(this), 4000)
-        //}
+
+        this.time.addEvent ({ delay: 4000, callback: this.startgame, callbackScope: this, loop: false }); 
+
+        
     
     }
 
@@ -105,6 +105,9 @@ class LoadScene extends Phaser.Scene
             canvas.style.height = height + "px";
         }
     
+    }
+    startgame() {
+        this.scene.start('GameScene');
     }
 }
 
